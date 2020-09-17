@@ -1,0 +1,54 @@
+
+const functions = require('firebase-functions');
+const {WebhookClient} = require('dialogflow-fulfillment');
+const {Card, Suggestion} = require('dialogflow-fulfillment');
+ 
+process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
+ 
+exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
+  const agent = new WebhookClient({ request, response });
+  
+  function adicao(agent) {
+    var soma = agent.parameters.number1 + agent.parameters.number2;
+    
+    agent.add('Resposta de seus calculos é:' + soma);
+    agent.add('TEXTO OPCIONAL');
+}
+  
+  
+  
+  function oi (agent) {
+    var interacao = "";
+    var currentUtcTime = new Date();
+    const d = new Date (currentUtcTime.toLocaleString('BR', { timeZone: 'America/Bahia' }));
+    const hora = d.getHours();
+    if (hora >= 1  && hora <= 12) {
+      interacao = "🌞 *Bom Dia*";
+    } else if (hora >= 13 && hora <= 18) { 
+      interacao = "🌅 *Boa Tarde*"; 
+    } else {
+      interacao = "🌚 *Boa Noite*"; 
+    }
+   agent.add(`${interacao}, *%name%* eu me chamo *MARIA* sou assistente virtual do pré candidato a prefeito *Padre Genário*.
+
+Digite uma das opção ou se preferir digite de forma natural o que você quiser saber, pois eu estou em desenvolvimento e suas palavras será muito útil para mim.
+
+*1* - 📲 _Redes Sociais_ 
+*2* - 📑 _Propostas_ 
+*3* - 📝 _Biografia_ 
+*4* - 📋 _Programa de Governo Participativo_ 
+
+*OUTROS ASSUNTOS*
+
+*5* - 🦠 _Corona Vírus_
+*6* - 🏙️ _Sobre Gongogi_
+*7* - 📞 _Telefones Importantes_
+*8* - 📤 _Sair_
+`);
+  }
+
+  let intentMap = new Map();
+  intentMap.set('Menu',oi);
+  intentMap.set('adicao', adicao);
+  agent.handleRequest(intentMap);
+});
