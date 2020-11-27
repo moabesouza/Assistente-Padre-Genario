@@ -8,14 +8,6 @@ process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
   const agent = new WebhookClient({ request, response });
   
-  function adicao(agent) {
-    var soma = agent.parameters.number1 + agent.parameters.number2;
-    
-    agent.add('Resposta de seus calculos é:' + soma);
-    agent.add('TEXTO OPCIONAL');
-}
-  
-  
   
   function oi (agent) {
     var interacao = "";
@@ -29,13 +21,13 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     } else {
       interacao = "🌚 *Boa Noite*"; 
     }
-   agent.add(`${interacao}, *%name%* eu me chamo *MARIA* sou assistente virtual do pré candidato a prefeito *Padre Genário*.
+   agent.add(`${interacao}, *%name%* eu me chamo *MARIA* sou assistente virtual do candidato a prefeito *Padre Genário*.
 
 Digite uma das opção ou se preferir digite de forma natural o que você quiser saber, pois eu estou em desenvolvimento e suas palavras será muito útil para mim.
 
 *1* - 📲 _Redes Sociais_ 
-*2* - 📑 _Propostas_ 
-*3* - 📝 _Biografia_ 
+*2* - 📑 _Plano de Governo Participativo_ 
+*3* - 📝 _Conheça o Padre Genario_ 
 *4* - 📋 _Programa de Governo Participativo_ 
 
 *OUTROS ASSUNTOS*
@@ -43,12 +35,12 @@ Digite uma das opção ou se preferir digite de forma natural o que você quiser
 *5* - 🦠 _Corona Vírus_
 *6* - 🏙️ _Sobre Gongogi_
 *7* - 📞 _Telefones Importantes_
-*8* - 📤 _Sair_
+*8* - 🗳️ _Locais de Votação_
+*0* - 📤 _Sair_
 `);
   }
 
   let intentMap = new Map();
   intentMap.set('Menu',oi);
-  intentMap.set('adicao', adicao);
   agent.handleRequest(intentMap);
 });
